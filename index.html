@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>在庫チェックシート（無料サンプル）｜roi｜EC自動化</title>
+<style>
+  :root{
+    --green:#0E3B2E;
+    --green-dark:#0A2C22;
+    --green-tint:#EAF3F0;
+    --gold:#C9A227;
+    --gold-tint:#FBF6E3;
+    --ink:#222222;
+    --muted:#6B7280;
+    --line:#D9DEDB;
+    --bg:#FFFFFF;
+  }
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{
+    margin:0;
+    background:#F5F6F5;
+    color:var(--ink);
+    font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans","Noto Sans JP","Yu Gothic UI","Yu Gothic",Meiryo,sans-serif;
+    line-height:1.6;
+  }
+  .wrap{max-width:960px;margin:0 auto;padding:0 16px 40px;}
+
+  /* ヘッダー */
+  header{
+    background:var(--green);
+    color:#fff;
+    margin:0 -16px;
+    padding:26px 16px 20px;
+    border-bottom:4px solid var(--gold);
+  }
+  .header-inner{max-width:960px;margin:0 auto;padding:0 16px;}
+  header h1{
+    margin:0 0 6px;
+    font-size:clamp(22px,5vw,32px);
+    font-weight:800;
+    letter-spacing:.02em;
+  }
+  header p{margin:0;font-size:14px;color:#D8E6E0;}
+
+  /* 使い方 */
+  .howto{
+    background:var(--bg);
+    border:1px solid var(--line);
+    border-left:5px solid var(--gold);
+    border-radius:8px;
+    padding:14px 18px;
+    margin:20px 0 16px;
+  }
+  .howto h2{margin:0 0 6px;font-size:15px;color:var(--green);}
+  .howto ol{margin:0;padding-left:1.4em;font-size:14px;}
+  .howto li{margin:2px 0;}
+  .note{font-size:12px;color:var(--muted);margin:8px 0 0;}
+
+  /* サマリー */
+  .summary{
+    display:flex;gap:12px;flex-wrap:wrap;margin:0 0 16px;
+  }
+  .card{
+    flex:1 1 220px;
+    background:var(--bg);
+    border:1px solid var(--line);
+    border-top:4px solid var(--green);
+    border-radius:8px;
+    padding:12px 18px 14px;
+  }
+  .card.gold{border-top-color:var(--gold);}
+  .card .label{font-size:13px;color:var(--muted);margin:0 0 2px;}
+  .card .value{font-size:clamp(24px,6vw,32px);font-weight:800;color:var(--green);margin:0;line-height:1.25;}
+  .card.gold .value{color:var(--green);}
+  .card .value .unit{font-size:15px;font-weight:700;}
+
+  /* テーブル */
+  .table-wrap{
+    background:var(--bg);
+    border:1px solid var(--line);
+    border-radius:8px;
+    overflow-x:auto;
+    -webkit-overflow-scrolling:touch;
+  }
+  table{border-collapse:collapse;width:100%;min-width:680px;}
+  thead th{
+    background:var(--green);
+    color:#fff;
+    font-size:13px;
+    font-weight:700;
+    padding:10px 8px;
+    text-align:center;
+    white-space:nowrap;
+  }
+  thead th.name{text-align:left;padding-left:12px;}
+  tbody td,tfoot td{
+    border-top:1px solid var(--line);
+    padding:7px 8px;
+    font-size:14px;
+    vertical-align:middle;
+  }
+  tbody tr:nth-child(even){background:#FAFBFA;}
+  td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap;}
+  td.center{text-align:center;}
+  input[type="text"],input[type="number"]{
+    width:100%;
+    font:inherit;
+    font-size:14px;
+    padding:7px 8px;
+    border:1px solid var(--line);
+    border-radius:6px;
+    background:#fff;
+    color:var(--ink);
+  }
+  input[type="number"]{text-align:right;}
+  input:focus{outline:2px solid var(--gold);outline-offset:0;border-color:var(--gold);}
+  td.name-cell{min-width:180px;}
+  td.stock-cell,td.point-cell{width:86px;}
+  td.price-cell{width:104px;}
+  .badge{
+    display:inline-block;
+    min-width:52px;
+    padding:3px 10px;
+    border-radius:999px;
+    font-size:13px;
+    font-weight:800;
+    text-align:center;
+  }
+  .badge.order{background:var(--gold);color:var(--green-dark);}
+  .badge.ok{background:var(--green-tint);color:var(--green);}
+  .badge.none{background:transparent;color:var(--muted);font-weight:400;}
+  .del-btn{
+    appearance:none;
+    border:1px solid var(--line);
+    background:#fff;
+    color:var(--muted);
+    border-radius:6px;
+    font-size:12px;
+    padding:6px 9px;
+    cursor:pointer;
+    white-space:nowrap;
+  }
+  .del-btn:hover{border-color:#C0564A;color:#C0564A;}
+  tfoot td{
+    background:var(--gold-tint);
+    font-weight:800;
+    color:var(--green);
+    font-size:15px;
+  }
+
+  /* ボタン */
+  .actions{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0 0;}
+  .btn{
+    appearance:none;
+    border-radius:8px;
+    font-size:14px;
+    font-weight:700;
+    padding:11px 18px;
+    cursor:pointer;
+  }
+  .btn-primary{background:var(--green);color:#fff;border:1px solid var(--green);}
+  .btn-primary:hover{background:var(--green-dark);}
+  .btn-ghost{background:#fff;color:var(--green);border:1px solid var(--green);}
+  .btn-ghost:hover{background:var(--green-tint);}
+
+  footer{
+    margin-top:28px;
+    padding-top:14px;
+    border-top:2px solid var(--gold);
+    font-size:13px;
+    color:var(--muted);
+    text-align:center;
+  }
+  footer .brand{color:var(--green);font-weight:700;}
+
+  @media (max-width:560px){
+    .wrap{padding:0 10px 32px;}
+    header{margin:0 -10px;padding:20px 10px 16px;}
+    .header-inner{padding:0 10px;}
+    .howto{padding:12px 14px;}
+    tbody td,tfoot td{padding:6px 5px;font-size:13px;}
+    input[type="text"],input[type="number"]{padding:6px 6px;font-size:13px;}
+    td.name-cell{min-width:150px;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="header-inner">
+      <h1>在庫チェックシート（無料サンプル）</h1>
+      <p>現在庫と発注点を入れるだけで、発注判定・発注目安数・在庫金額を自動計算します。</p>
+    </div>
+  </header>
+
+  <section class="howto">
+    <h2>使い方</h2>
+    <ol>
+      <li>棚卸しで数えた実数を「現在庫」に入力します。「発注点」は“この数を切ったら発注したい”という目安の数です。</li>
+      <li>現在庫が発注点以下になると判定が「発注」になり、発注目安数と在庫金額が自動で計算されます。</li>
+      <li>「発注」の行だけを確認して発注すればOKです。合計で、いま在庫にいくらあるかも分かります。</li>
+    </ol>
+    <p class="note">※サンプルデータは入力例です。お使いの商品名・数値に置き換えてご利用ください。このツールはお使いのブラウザの中だけで計算し、入力内容が外部に送信・保存されることはありません。</p>
+  </section>
+
+  <section class="summary" aria-label="集計">
+    <div class="card">
+      <p class="label">合計 在庫金額</p>
+      <p class="value" id="totalAmount">¥0</p>
+    </div>
+    <div class="card gold">
+      <p class="label">発注が必要な商品</p>
+      <p class="value"><span id="orderCount">0</span> <span class="unit">件</span></p>
+    </div>
+  </section>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th class="name">商品名</th>
+          <th>現在庫</th>
+          <th>発注点</th>
+          <th>単価（円）</th>
+          <th>発注判定</th>
+          <th>発注目安数</th>
+          <th>在庫金額</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="rows"></tbody>
+      <tfoot>
+        <tr>
+          <td colspan="6" style="text-align:right;">合計</td>
+          <td class="num" id="totalAmountFoot">¥0</td>
+          <td></td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+
+  <div class="actions">
+    <button type="button" class="btn btn-primary" id="addRowBtn">＋ 商品を追加</button>
+    <button type="button" class="btn btn-ghost" id="resetBtn">サンプルデータに戻す</button>
+  </div>
+
+  <footer>
+    <span class="brand">roi｜EC自動化</span> テンプレート集の無料サンプルです
+  </footer>
+
+</div>
+
+<script>
+"use strict";
+// === PURE LOGIC START ===
+// Excel「在庫チェック」シートの計算式をそのまま再現した純粋関数群
+// 判定: =IF(OR(現在庫="",発注点=""),"",IF(現在庫<=発注点,"発注","OK"))
+// 目安: =IF(判定="発注",発注点*2-現在庫,0)
+// 金額: =IF(現在庫="","",現在庫*単価)  ※単価が空欄の場合はExcel同様0として計算
+function calcRow(stock, point, price) {
+  var hasStock = (stock !== "" && stock !== null && typeof stock !== "undefined" && !isNaN(stock));
+  var hasPoint = (point !== "" && point !== null && typeof point !== "undefined" && !isNaN(point));
+  var judge = "";
+  if (hasStock && hasPoint) {
+    judge = (stock <= point) ? "発注" : "OK";
+  }
+  var guide = "";
+  if (judge === "発注") {
+    guide = point * 2 - stock;
+  } else if (judge === "OK") {
+    guide = 0;
+  }
+  var amount = "";
+  if (hasStock) {
+    var p = (price === "" || price === null || typeof price === "undefined" || isNaN(price)) ? 0 : price;
+    amount = stock * p;
+  }
+  return { judge: judge, guide: guide, amount: amount };
+}
+
+function calcTotals(rows) {
+  var total = 0;
+  var orderCount = 0;
+  for (var i = 0; i < rows.length; i++) {
+    var r = calcRow(rows[i].stock, rows[i].point, rows[i].price);
+    if (r.amount !== "") total += r.amount;
+    if (r.judge === "発注") orderCount++;
+  }
+  return { total: total, orderCount: orderCount };
+}
+
+var SAMPLE_DATA = [
+  { name: "ハンドソープ詰め替え 500ml",       stock: 24, point: 20, price: 480 },
+  { name: "洗濯洗剤 ジェルボール 36個入り",   stock: 8,  point: 15, price: 890 },
+  { name: "アルミホイル 25cm×12m",            stock: 42, point: 30, price: 320 },
+  { name: "キッチンペーパー 6ロール",         stock: 5,  point: 12, price: 540 },
+  { name: "除菌ウェットシート 80枚",          stock: 18, point: 18, price: 390 },
+  { name: "ゴミ袋 45L 30枚入り",              stock: 60, point: 25, price: 450 },
+  { name: "食器用スポンジ 5個セット",         stock: 33, point: 20, price: 280 },
+  { name: "衣類用防虫剤 引き出し用 24個",     stock: 11, point: 10, price: 760 },
+  { name: "フローリングワイパーシート 20枚",  stock: 3,  point: 10, price: 350 },
+  { name: "単三電池 8本パック",               stock: 27, point: 15, price: 620 }
+];
+// === PURE LOGIC END ===
+
+// ---- DOM 操作 ----
+var rowsEl = document.getElementById("rows");
+var totalAmountEl = document.getElementById("totalAmount");
+var totalAmountFootEl = document.getElementById("totalAmountFoot");
+var orderCountEl = document.getElementById("orderCount");
+
+function fmtYen(n) {
+  return "¥" + Number(n).toLocaleString("ja-JP");
+}
+function fmtNum(n) {
+  return Number(n).toLocaleString("ja-JP");
+}
+function parseNum(v) {
+  if (v === "" || v === null) return "";
+  var n = parseFloat(v);
+  return isNaN(n) ? "" : n;
+}
+
+function buildRow(data) {
+  var tr = document.createElement("tr");
+
+  var tdName = document.createElement("td");
+  tdName.className = "name-cell";
+  var inName = document.createElement("input");
+  inName.type = "text";
+  inName.value = data.name || "";
+  inName.placeholder = "商品名";
+  inName.setAttribute("aria-label", "商品名");
+  tdName.appendChild(inName);
+  tr.appendChild(tdName);
+
+  function numCell(val, cls, label) {
+    var td = document.createElement("td");
+    td.className = cls;
+    var inp = document.createElement("input");
+    inp.type = "number";
+    inp.inputMode = "numeric";
+    inp.value = (val === "" || val === null || typeof val === "undefined") ? "" : val;
+    inp.setAttribute("aria-label", label);
+    td.appendChild(inp);
+    tr.appendChild(td);
+    return inp;
+  }
+  var inStock = numCell(data.stock, "stock-cell", "現在庫");
+  var inPoint = numCell(data.point, "point-cell", "発注点");
+  var inPrice = numCell(data.price, "price-cell", "単価（円）");
+
+  var tdJudge = document.createElement("td");
+  tdJudge.className = "center";
+  var badge = document.createElement("span");
+  badge.className = "badge none";
+  badge.textContent = "—";
+  tdJudge.appendChild(badge);
+  tr.appendChild(tdJudge);
+
+  var tdGuide = document.createElement("td");
+  tdGuide.className = "num";
+  tr.appendChild(tdGuide);
+
+  var tdAmount = document.createElement("td");
+  tdAmount.className = "num";
+  tr.appendChild(tdAmount);
+
+  var tdDel = document.createElement("td");
+  tdDel.className = "center";
+  var del = document.createElement("button");
+  del.type = "button";
+  del.className = "del-btn";
+  del.textContent = "削除";
+  del.addEventListener("click", function () {
+    tr.remove();
+    recalc();
+  });
+  tdDel.appendChild(del);
+  tr.appendChild(tdDel);
+
+  tr._refs = {
+    name: inName, stock: inStock, point: inPoint, price: inPrice,
+    badge: badge, guide: tdGuide, amount: tdAmount
+  };
+  [inName, inStock, inPoint, inPrice].forEach(function (inp) {
+    inp.addEventListener("input", recalc);
+  });
+  return tr;
+}
+
+function readRows() {
+  var rows = [];
+  var trs = rowsEl.querySelectorAll("tr");
+  for (var i = 0; i < trs.length; i++) {
+    var r = trs[i]._refs;
+    rows.push({
+      name: r.name.value,
+      stock: parseNum(r.stock.value),
+      point: parseNum(r.point.value),
+      price: parseNum(r.price.value)
+    });
+  }
+  return rows;
+}
+
+function recalc() {
+  var trs = rowsEl.querySelectorAll("tr");
+  for (var i = 0; i < trs.length; i++) {
+    var refs = trs[i]._refs;
+    var res = calcRow(
+      parseNum(refs.stock.value),
+      parseNum(refs.point.value),
+      parseNum(refs.price.value)
+    );
+    if (res.judge === "発注") {
+      refs.badge.className = "badge order";
+      refs.badge.textContent = "発注";
+    } else if (res.judge === "OK") {
+      refs.badge.className = "badge ok";
+      refs.badge.textContent = "OK";
+    } else {
+      refs.badge.className = "badge none";
+      refs.badge.textContent = "—";
+    }
+    refs.guide.textContent = (res.guide === "") ? "" : fmtNum(res.guide);
+    refs.amount.textContent = (res.amount === "") ? "" : fmtYen(res.amount);
+  }
+  var totals = calcTotals(readRows());
+  totalAmountEl.textContent = fmtYen(totals.total);
+  totalAmountFootEl.textContent = fmtYen(totals.total);
+  orderCountEl.textContent = totals.orderCount;
+}
+
+function renderSample() {
+  rowsEl.innerHTML = "";
+  SAMPLE_DATA.forEach(function (d) {
+    rowsEl.appendChild(buildRow(d));
+  });
+  recalc();
+}
+
+document.getElementById("addRowBtn").addEventListener("click", function () {
+  var tr = buildRow({ name: "", stock: "", point: "", price: "" });
+  rowsEl.appendChild(tr);
+  recalc();
+  tr._refs.name.focus();
+});
+document.getElementById("resetBtn").addEventListener("click", renderSample);
+
+renderSample();
+</script>
+</body>
+</html>
