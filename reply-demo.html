@@ -9,7 +9,7 @@
 --green:#0E3B2E;
 --green-dark:#0A2C22;
 --green-tint:#EAF3F0;
---gold:#C9A227;
+{--gold:#C9A227;
 --gold-tint:#FBF6E3;
 --ink:#222222;
 --muted:#6B7280;
@@ -269,8 +269,9 @@ id: "remote",
 title: "離島・遠方の送料は",
 desc: "追加料金があるとき（加算後の合計まで案内）",
 fields: [
-{ key: "customer", label: "お客様名", sample: "沖縄県"},
-{ key: "baseFee", label: "通常の送料（円）", sample: "880"},
+{ key: "customer", label: "お客様名", sample: "山田"},
+  { key: "region", label: "地域名", sample: "沖縄県"},
+  { key: "baseFee", label: "通常の送料（円）", sample: "880"},
 { key: "extraFee", label: "離島・遠方料金（円）", sample: "500"},
 { key: "totalFee", label: "合計の送料（円）", sample: "1,380"},
 { key: "extraDays", label: "通常より長くなる日数（日）", sample: "1〜2"},
