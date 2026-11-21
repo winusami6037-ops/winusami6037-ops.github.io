@@ -223,20 +223,7 @@ fields: [
 { key: "days", label: "お届け目安（営業日）", sample: "2〜3"},
 { key: "shop", label: "ショップ名", sample: "サンプルショップ"}
 ],
-text: "{customer}様
-
-お問い合わせありがとうございます。
-送料についてのご案内です。
-
-・送料：全国一律{shippingFee}円
-・合計{freeThreshold}円以上のご注文で送料無料です
-・お届け目安：ご注文から{days}営業日
-
-商品ページの「送料について」にも同じ内容を載せています。
-他に気になる点があれば、このメールにご返信ください。
-
-
-{shop}"
+text: "{customer}様\n\nお問い合わせありがとうございます。\n送料についてのご案内です。\n\n・送料：全国一律{shippingFee}円\n・合計{freeThreshold}円以上のご注文で送料無料です\n・お届け目安：ご注文から{days}営業日\n\n商品ページの「送料について」にも同じ内容を載せています。\n他に気になる点があれば、このメールにご返信ください。\n\n\n{shop}"
 },
 {
 id: "almost",
@@ -251,18 +238,7 @@ fields: [
 { key: "productPrice", label: "おすすめ商品の金額（円）", sample: "480"},
 { key: "shop", label: "ショップ名", sample: "サンプルショップ"}
 ],
-text: "{customer}様
-
-お問い合わせありがとうございます。
-現在のお買い物は合計{currentTotal}円で、あと{remaining}円で送料無料（{freeThreshold}円以上）になります。
-
-送料無料まであと少しのときは、消耗品やストック品を1つ足すお客様が多いです。
-よろしければ{productName}（{productPrice}円）などもご覧ください。
-
-ご注文はこのまま進めていただいても、追加いただいても大丈夫です。
-
-
-{shop}"
+text: "{customer}様\n\nお問い合わせありがとうございます。\n現在のお買い物は合計{currentTotal}円で、あと{remaining}円で送料無料（{freeThreshold}円以上）になります。\n\n送料無料まであと少しのときは、消耗品やストック品を1つ足すお客様が多いです。\nよろしければ{productName}（{productPrice}円）などもご覧ください。\n\nご注文はこのまま進めていただいても、追加いただいても大丈夫です。\n\n\n{shop}"
 },
 {
 id: "remote",
@@ -270,27 +246,15 @@ title: "離島・遠方の送料は",
 desc: "追加料金があるとき（加算後の合計まで案内）",
 fields: [
 { key: "customer", label: "お客様名", sample: "山田"},
-  { key: "region", label: "地域名", sample: "沖縄県"},
-  { key: "baseFee", label: "通常の送料（円）", sample: "880"},
+{ key: "region", label: "地域名", sample: "沖縄県"},
+{ key: "baseFee", label: "通常の送料（円）", sample: "880"},
 { key: "extraFee", label: "離島・遠方料金（円）", sample: "500"},
 { key: "totalFee", label: "合計の送料（円）", sample: "1,380"},
 { key: "extraDays", label: "通常より長くなる日数（日）", sample: "1〜2"},
 { key: "deliveryDays", label: "お届け目安（営業日）", sample: "3〜4"},
 { key: "shop", label: "ショップ名", sample: "サンプルショップ"}
 ],
-text: "{customer}様
-
-お問い合わせありがとうございます。
-{region}への送料についてのご案内です。
-
-通常の送料{baseFee}円に、離島・遠方料金として{extraFee}円が加算され、合計{totalFee}円になります。
-お届け目安は通常より{extraDays}日ほど長く、{deliveryDays}営業日です。
-
-ご注文後に金額が変わることはありませんので、ご安心ください。
-他に気になる点があれば、このメールにご返信ください。
-
-
-{shop}"
+text: "{customer}様\n\nお問い合わせありがとうございます。\n{region}への送料についてのご案内です。\n\n通常の送料{baseFee}円に、離島・遠方料金として{extraFee}円が加算され、合計{totalFee}円になります。\nお届け目安は通常より{extraDays}日ほど長く、{deliveryDays}営業日です。\n\nご注文後に金額が変わることはありませんので、ご安心ください。\n他に気になる点があれば、このメールにご返信ください。\n\n\n{shop}"
 }
 ];
 function getTemplate(id) {
