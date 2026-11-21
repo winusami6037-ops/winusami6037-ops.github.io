@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>問い合わせ返信テンプレ組み立てデモ（無料サンプル）｜roi｜EC自動化</title>
+<style>
+:root{
+--green:#0E3B2E;
+--green-dark:#0A2C22;
+--green-tint:#EAF3F0;
+--gold:#C9A227;
+--gold-tint:#FBF6E3;
+--ink:#222222;
+--muted:#6B7280;
+--line:#D9DEDB;
+--bg:#FFFFFF;
+}
+*{box-sizing:border-box;}
+html{-webkit-text-size-adjust:100%;}
+body{
+margin:0;
+background:#F5F6F5;
+color:var(--ink);
+font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans","Noto Sans JP","Yu Gothic UI","Yu Gothic",Meiryo,sans-serif;
+line-height:1.6;
+}
+.wrap{max-width:960px;margin:0 auto;padding:0 16px 40px;}
+header{
+background:var(--green);
+color:#fff;
+margin:0 -16px;
+padding:26px 16px 20px;
+border-bottom:4px solid var(--gold);
+}
+.header-inner{max-width:960px;margin:0 auto;padding:0 16px;}
+header h1{
+margin:0 0 6px;
+font-size:clamp(22px,5vw,32px);
+font-weight:800;
+letter-spacing:.02em;
+}
+header p{margin:0;font-size:14px;color:#D8E6E0;}
+.howto{
+background:var(--bg);
+border:1px solid var(--line);
+border-left:5px solid var(--gold);
+border-radius:8px;
+padding:14px 18px;
+margin:20px 0 16px;
+}
+.howto h2{margin:0 0 6px;font-size:15px;color:var(--green);}
+.howto ol{margin:0;padding-left:1.4em;font-size:14px;}
+.howto li{margin:2px 0;}
+.note{font-size:12px;color:var(--muted);margin:8px 0 0;}
+.step{
+background:var(--bg);
+border:1px solid var(--line);
+border-radius:8px;
+padding:16px 18px 18px;
+margin:0 0 16px;
+}
+.step h2{
+margin:0 0 12px;
+font-size:16px;
+color:var(--green);
+display:flex;
+align-items:center;
+gap:8px;
+}
+.step h2 .num{
+display:inline-flex;
+align-items:center;
+justify-content:center;
+width:24px;height:24px;
+border-radius:50%;
+background:var(--green);
+color:#fff;
+font-size:13px;
+font-weight:800;
+flex:none;
+}
+.pattern-list{display:flex;gap:10px;flex-wrap:wrap;}
+.pattern-btn{
+appearance:none;
+flex:1 1 220px;
+text-align:left;
+background:#fff;
+border:2px solid var(--line);
+border-radius:8px;
+padding:12px 14px;
+cursor:pointer;
+font:inherit;
+}
+.pattern-btn .p-title{display:block;font-size:15px;font-weight:800;color:var(--ink);}
+.pattern-btn .p-desc{display:block;font-size:12px;color:var(--muted);margin-top:2px;}
+.pattern-btn.active{border-color:var(--gold);background:var(--gold-tint);}
+.pattern-btn.active .p-title{color:var(--green);}
+.field{margin:0 0 12px;}
+.field label{
+display:block;
+font-size:13px;
+font-weight:700;
+color:var(--green);
+margin:0 0 4px;
+}
+.field input[type="text"]{
+width:100%;
+font:inherit;
+font-size:15px;
+padding:9px 10px;
+border:1px solid var(--line);
+border-radius:6px;
+background:#fff;
+color:var(--ink);
+}
+.field input[type="text"]:focus{outline:2px solid var(--gold);outline-offset:0;border-color:var(--gold);}
+.preview{
+background:#FAFBFA;
+border:1px solid var(--line);
+border-radius:8px;
+padding:14px 16px;
+font-size:14px;
+white-space:pre-wrap;
+word-break:break-word;
+min-height:200px;
+}
+.warn{
+display:none;
+margin:10px 0 0;
+font-size:13px;
+color:#9A6A00;
+background:var(--gold-tint);
+border:1px solid var(--gold);
+border-radius:6px;
+padding:8px 12px;
+}
+.warn.show{display:block;}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0 0;align-items:center;}
+.btn{
+appearance:none;
+border-radius:8px;
+font-size:14px;
+font-weight:700;
+padding:11px 18px;
+cursor:pointer;
+}
+.btn-primary{background:var(--green);color:#fff;border:1px solid var(--green);}
+.btn-primary:hover{background:var(--green-dark);}
+.btn-ghost{background:#fff;color:var(--green);border:1px solid var(--green);}
+.btn-ghost:hover{background:var(--green-tint);}
+.copied{font-size:13px;color:var(--green);font-weight:700;display:none;}
+.copied.show{display:inline;}
+footer{
+margin-top:28px;
+padding-top:14px;
+border-top:2px solid var(--gold);
+font-size:13px;
+color:var(--muted);
+text-align:center;
+}
+footer .brand{color:var(--green);font-weight:700;}
+@media (max-width:560px){
+.wrap{padding:0 10px 32px;}
+header{margin:0 -10px;padding:20px 10px 16px;}
+.header-inner{padding:0 10px;}
+.howto{padding:12px 14px;}
+.step{padding:14px 14px 16px;}
+.pattern-btn{flex:1 1 100%;}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+<div class="header-inner">
+<h1>問い合わせ返信テンプレ組み立てデモ（無料サンプル）</h1>
+<p>状況を選んで金額などを入れるだけで、送料の問い合わせへの返信文がその場で組み上がります。</p>
+</div>
+</header>
+<section class="howto">
+<h2>使い方</h2>
+<ol>
+<li>届いた問い合わせに合う状況を選びます（送料の問い合わせは、ほぼこの3パターンに分かれます）。</li>
+<li>お客様名や金額など、自分のショップの内容を入力します。入力すると、下の返信文にその場で反映されます。</li>
+<li>返信文を確認して「返信文をコピー」を押し、メールやメッセージに貼って送ります。</li>
+</ol>
+<p class="note">※最初から入力例が入っています。お使いの内容に置き換えてご利用ください。このデモはお使いのブラウザの中だけで動作し、入力内容が外部に送信・保存されることはありません。</p>
+</section>
+<section class="step" aria-label="状況を選ぶ">
+<h2><span class="num">1</span>状況を選ぶ</h2>
+<div class="pattern-list" id="patternList"></div>
+</section>
+<section class="step" aria-label="項目を入れる">
+<h2><span class="num">2</span>項目を入れる</h2>
+<div id="formFields"></div>
+</section>
+<section class="step" aria-label="組み上がった返信文">
+<h2><span class="num">3</span>組み上がった返信文</h2>
+<div class="preview" id="preview"></div>
+<p class="warn" id="warn"></p>
+<div class="actions">
+<button type="button" class="btn btn-primary" id="copyBtn">返信文をコピー</button>
+<button type="button" class="btn btn-ghost" id="sampleBtn">入力例に戻す</button>
+<span class="copied" id="copiedMsg">コピーしました</span>
+</div>
+</section>
+<footer>
+<span class="brand">roi｜EC自動化</span> テンプレート集【前編】No.2「送料の問い合わせ返信テンプレ」の無料サンプルです
+</footer>
+</div>
+<script>
+"use strict";
+var TEMPLATES = [
+{
+id: "basic",
+title: "送料はいくらですか",
+desc: "基本の案内（送料・無料条件・お届け目安）",
+fields: [
+{ key: "customer", label: "お客様名", sample: "山田"},
+{ key: "shippingFee", label: "送料（円）", sample: "880"},
+{ key: "freeThreshold", label: "送料無料になる合計金額（円）", sample: "5,000"},
+{ key: "days", label: "お届け目安（営業日）", sample: "2〜3"},
+{ key: "shop", label: "ショップ名", sample: "サンプルショップ"}
+],
+text: "{customer}様
+
+お問い合わせありがとうございます。
+送料についてのご案内です。
+
+・送料：全国一律{shippingFee}円
+・合計{freeThreshold}円以上のご注文で送料無料です
+・お届け目安：ご注文から{days}営業日
+
+商品ページの「送料について」にも同じ内容を載せています。
+他に気になる点があれば、このメールにご返信ください。
+
+
+{shop}"
+},
+{
+id: "almost",
+title: "あと少しで送料無料になりますか",
+desc: "金額の目安を聞かれたとき（おすすめ商品の案内つき）",
+fields: [
+{ key: "customer", label: "お客様名", sample: "山田"},
+{ key: "currentTotal", label: "現在のお買い物合計（円）", sample: "4,200"},
+{ key: "remaining", label: "送料無料まであと（円）", sample: "800"},
+{ key: "freeThreshold", label: "送料無料の条件金額（円）", sample: "5,000"},
+{ key: "productName", label: "おすすめ商品名", sample: "ハンドソープ詰め替え 500ml"},
+{ key: "productPrice", label: "おすすめ商品の金額（円）", sample: "480"},
+{ key: "shop", label: "ショップ名", sample: "サンプルショップ"}
+],
+text: "{customer}様
+
+お問い合わせありがとうございます。
+現在のお買い物は合計{currentTotal}円で、あと{remaining}円で送料無料（{freeThreshold}円以上）になります。
+
+送料無料まであと少しのときは、消耗品やストック品を1つ足すお客様が多いです。
+よろしければ{productName}（{productPrice}円）などもご覧ください。
+
+ご注文はこのまま進めていただいても、追加いただいても大丈夫です。
+
+
+{shop}"
+},
+{
+id: "remote",
+title: "離島・遠方の送料は",
+desc: "追加料金があるとき（加算後の合計まで案内）",
+fields: [
+{ key: "customer", label: "お客様名", sample: "沖縄県"},
+{ key: "baseFee", label: "通常の送料（円）", sample: "880"},
+{ key: "extraFee", label: "離島・遠方料金（円）", sample: "500"},
+{ key: "totalFee", label: "合計の送料（円）", sample: "1,380"},
+{ key: "extraDays", label: "通常より長くなる日数（日）", sample: "1〜2"},
+{ key: "deliveryDays", label: "お届け目安（営業日）", sample: "3〜4"},
+{ key: "shop", label: "ショップ名", sample: "サンプルショップ"}
+],
+text: "{customer}様
+
+お問い合わせありがとうございます。
+{region}への送料についてのご案内です。
+
+通常の送料{baseFee}円に、離島・遠方料金として{extraFee}円が加算され、合計{totalFee}円になります。
+お届け目安は通常より{extraDays}日ほど長く、{deliveryDays}営業日です。
+
+ご注文後に金額が変わることはありませんので、ご安心ください。
+他に気になる点があれば、このメールにご返信ください。
+
+
+{shop}"
+}
+];
+function getTemplate(id) {
+for (var i = 0; i < TEMPLATES.length; i++) {
+if (TEMPLATES[i].id === id) return TEMPLATES[i];
+}
+return TEMPLATES[0];
+}
+function buildReply(template, values) {
+var out = template.text;
+template.fields.forEach(function (f) {
+var v = values ? values[f.key] : "";
+var replacement = (v === null || typeof v === "undefined" || String(v).trim() === "")
+? "［" + f.label + "］"
+: String(v);
+out = out.split("{" + f.key + "}").join(replacement);
+});
+return out;
+}
+function missingFields(template, values) {
+var missing = [];
+template.fields.forEach(function (f) {
+var v = values ? values[f.key] : "";
+if (v === null || typeof v === "undefined" || String(v).trim() === "") {
+missing.push(f.label);
+}
+});
+return missing;
+}
+var patternListEl = document.getElementById("patternList");
+var formFieldsEl = document.getElementById("formFields");
+var previewEl = document.getElementById("preview");
+var warnEl = document.getElementById("warn");
+var copiedMsgEl = document.getElementById("copiedMsg");
+var currentId = TEMPLATES[0].id;
+var valuesByTemplate = {};
+function sampleValues(template) {
+var v = {};
+template.fields.forEach(function (f) { v[f.key] = f.sample; });
+return v;
+}
+function currentValues() {
+if (!valuesByTemplate[currentId]) {
+valuesByTemplate[currentId] = sampleValues(getTemplate(currentId));
+}
+return valuesByTemplate[currentId];
+}
+function renderPatterns() {
+patternListEl.innerHTML = "";
+TEMPLATES.forEach(function (t) {
+var btn = document.createElement("button");
+btn.type = "button";
+btn.className = "pattern-btn" + (t.id === currentId ? " active" : "");
+var title = document.createElement("span");
+title.className = "p-title";
+title.textContent = t.title;
+var desc = document.createElement("span");
+desc.className = "p-desc";
+desc.textContent = t.desc;
+btn.appendChild(title);
+btn.appendChild(desc);
+btn.addEventListener("click", function () {
+currentId = t.id;
+renderPatterns();
+renderForm();
+renderPreview();
+});
+patternListEl.appendChild(btn);
+});
+}
+function renderForm() {
+var template = getTemplate(currentId);
+var values = currentValues();
+formFieldsEl.innerHTML = "";
+template.fields.forEach(function (f) {
+var wrap = document.createElement("div");
+wrap.className = "field";
+var label = document.createElement("label");
+label.textContent = f.label;
+label.setAttribute("for", "field-" + f.key);
+var input = document.createElement("input");
+input.type = "text";
+input.id = "field-" + f.key;
+input.value = values[f.key] || "";
+input.setAttribute("aria-label", f.label);
+input.addEventListener("input", function () {
+currentValues()[f.key] = input.value;
+copiedMsgEl.classList.remove("show");
+renderPreview();
+});
+wrap.appendChild(label);
+wrap.appendChild(input);
+formFieldsEl.appendChild(wrap);
+});
+}
+function renderPreview() {
+var template = getTemplate(currentId);
+var values = currentValues();
+previewEl.textContent = buildReply(template, values);
+var missing = missingFields(template, values);
+if (missing.length > 0) {
+warnEl.textContent = "未入力の項目があります：" + missing.join("、") + "（返信文の中に［ ］で残っています）";
+warnEl.classList.add("show");
+} else {
+warnEl.textContent = "";
+warnEl.classList.remove("show");
+}
+}
+document.getElementById("copyBtn").addEventListener("click", function () {
+var text = previewEl.textContent;
+function done() { copiedMsgEl.classList.add("show"); }
+if (navigator.clipboard && navigator.clipboard.writeText) {
+navigator.clipboard.writeText(text).then(done, function () { fallbackCopy(text); done(); });
+} else {
+fallbackCopy(text);
+done();
+}
+});
+function fallbackCopy(text) {
+var ta = document.createElement("textarea");
+ta.value = text;
+ta.style.position = "fixed";
+ta.style.opacity = "0";
+document.body.appendChild(ta);
+ta.select();
+try { document.execCommand("copy"); } catch (e) {}
+document.body.removeChild(ta);
+}
+document.getElementById("sampleBtn").addEventListener("click", function () {
+valuesByTemplate[currentId] = sampleValues(getTemplate(currentId));
+copiedMsgEl.classList.remove("show");
+renderForm();
+renderPreview();
+});
+renderPatterns();
+renderForm();
+renderPreview();
+</script>
+</body>
+</html>
