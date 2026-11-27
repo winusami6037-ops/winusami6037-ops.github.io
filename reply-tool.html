@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>問い合わせ返信テンプレ生成ツール｜roi EC自動化</title>
+<style>
+:root{
+--navy:#14304D; --teal:#12B5A5; --bg:#F4F7FA; --card:#FFFFFF;
+--text:#1E2A36; --muted:#5B6B7A; --line:#D8E1E9; --yellow:#FFD94D;
+}
+*{box-sizing:border-box; margin:0; padding:0;}
+body{font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans","Noto Sans JP",sans-serif; background:var(--bg); color:var(--text); line-height:1.7;}
+header{background:var(--navy); color:#fff; padding:28px 20px 24px;}
+header.inner{max-width:760px; margin:0 auto;}
+header h1{font-size:24px; letter-spacing:.02em;}
+header h1.accent{color:var(--teal);}
+header p{font-size:14px; color:#C9D6E2; margin-top:6px;}
+main{max-width:760px; margin:0 auto; padding:20px 16px 40px;}
+.card{background:var(--card); border:1px solid var(--line); border-radius:12px; padding:20px; margin-bottom:16px;}
+.card h2{font-size:16px; color:var(--navy); border-left:5px solid var(--teal); padding-left:10px; margin-bottom:14px;}
+label{display:block; font-size:13px; font-weight:700; color:var(--navy); margin:12px 0 4px;}
+label.opt, span.opt{font-weight:400; color:var(--muted); font-size:12px;}
+input[type="text"], select{width:100%; padding:10px 12px; border:1px solid var(--line); border-radius:8px; font-size:15px; background:#fff; color:var(--text);}
+input[type="text"]:focus, select:focus{outline:2px solid var(--teal); outline-offset:1px;}
+.row{display:grid; grid-template-columns:1fr 1fr; gap:12px;}
+@media (max-width:560px){.row{grid-template-columns:1fr;}}
+.radio-group{display:flex; gap:8px; flex-wrap:wrap; margin-top:4px;}
+.radio-group label{margin:0; font-weight:400;}
+.radio-chip{display:inline-flex; align-items:center; gap:6px; border:1px solid var(--line); border-radius:999px; padding:6px 14px; font-size:14px; cursor:pointer; background:#fff;}
+.radio-chip input{accent-color:var(--teal);}
+button.gen{width:100%; background:var(--teal); color:#fff; border:none; border-radius:10px; padding:14px; font-size:16px; font-weight:700; cursor:pointer; margin-top:16px;}
+button.gen:active{opacity:.85;}
+.out-head{display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;}
+.out-head h2{margin-bottom:0;}
+button.copy{background:var(--navy); color:#fff; border:none; border-radius:8px; padding:8px 16px; font-size:13px; font-weight:700; cursor:pointer;}
+button.copy.done{background:var(--teal);}
+textarea{width:100%; min-height:300px; border:1px solid var(--line); border-radius:8px; padding:14px; font-size:14px; line-height:1.8; font-family:inherit; background:#FBFDFE; color:var(--text); resize:vertical;}
+.hint{font-size:12px; color:var(--muted); margin-top:8px;}
+.point{background:#FFF8DC; border:1px solid var(--yellow); border-radius:10px; padding:14px 16px; font-size:13px; margin-bottom:16px;}
+.point strong{color:var(--navy);}
+footer{text-align:center; color:var(--muted); font-size:12px; padding:20px 0 32px;}
+</style>
+</head>
+<body>
+<header>
+<div class="inner">
+<h1>問い合わせ返信テンプレ<span class="accent">生成ツール</span></h1>
+<p>問い合わせへの返信文を、「不安を受け止める一文→回答→次の案内」の型で組み立てます。種別を選んで、生成して、コピーするだけ。</p>
+</div>
+</header>
+<main>
+<div class="point">
+<strong>使い方のコツ：</strong> 返信は最初の一文で相手の不安を受け止めると、そのあとの案内が伝わりやすくなります。の部分は、実際の日付や番号に書き換えてから送ってください。
+</div>
+
+<div class="card">
+<h2>1. 問い合わせ内容を入力</h2>
+<div class="row">
+<div>
+<label for="customer">お客様名 <span class="opt">（任意）</span></label>
+<input type="text" id="customer" placeholder="例：佐藤 美咲">
+</div>
+<div>
+<label for="shop">店舗名・差出人名 <span class="opt">（任意）</span></label>
+<input type="text" id="shop" placeholder="例：雑貨店サンプル">
+</div>
+</div>
+<label for="type">問い合わせ種別</label>
+<select id="type">
+<option value="shipping">発送時期について</option>
+<option value="stock">在庫の有無について</option>
+<option value="change">注文変更・キャンセルについて</option>
+<option value="notdelivered">届かない・配送状況について</option>
+<option value="other">その他</option>
+</select>
+<label>文面のトーン</label>
+<div class="radio-group">
+<span class="radio-chip"><input type="radio" name="tone" id="tone-polite" value="polite" checked><label for="tone-polite">丁寧</label></span>
+<span class="radio-chip"><input type="radio" name="tone" id="tone-casual" value="casual"><label for="tone-casual">カジュアル</label></span>
+</div>
+<button class="gen" id="generate">返信文を生成する</button>
+</div>
+
+<div class="card">
+<div class="out-head">
+<h2>2. 生成された返信文</h2>
+<button class="copy" id="copy">コピーする</button>
+</div>
+<textarea id="output" readonly placeholder="「返信文を生成する」を押すと、ここに文面が表示されます。"></textarea>
+<p class="hint">の部分（日付・番号など）を実際の内容に書き換えてから送信してください。</p>
+</div>
+</main>
+<footer>roi｜EC自動化</footer>
+
+<script>
+(function(){
+function val(id){ return document.getElementById(id).value.trim();}
+
+var templates = {
+shipping: {
+polite: [
+"お問い合わせいただき、ありがとうございます。発送の時期が分からず、ご不安に思われているところへお待たせしてしまい、申し訳ございません。",
+"ご注文の商品は、に発送予定です。発送が完了しましたら、追跡番号を記載したメールをあらためてお送りいたします。",
+"到着まで今しばらくお待ちいただけますと幸いです。そのほかにご不明な点がございましたら、お気軽にお知らせください。"
+],
+casual: [
+"お問い合わせありがとうございます。発送時期が分からず、ご心配をおかけしてすみません。",
+"ご注文の商品はに発送予定です。発送できましたら、追跡番号つきのメールをお送りしますね。",
+"到着までもう少しだけお待ちください。ほかに気になることがあれば、いつでもご連絡ください。"
+]
+},
+stock: {
+polite: [
+"お問い合わせいただき、ありがとうございます。お探しの商品が手に入るかどうか、気になっていらっしゃるところへご案内が遅くなり、申し訳ございません。",
+"は現在、在庫がございます。ただし数に限りがございますため、売り切れの際はご容赦ください。再入荷の予定がある場合は、決まり次第このメールへご案内いたします。",
+"ご注文の際は、商品ページの在庫表示もあわせてご確認いただけますと安心です。そのほかご不明な点がございましたら、お気軽にお知らせください。"
+],
+casual: [
+"お問い合わせありがとうございます。在庫があるか気になりますよね。",
+"は今のところ在庫があります。ただ、数は多くないので、売り切れてしまったらごめんなさい。",
+"入荷の予定が決まったらご案内します。ほかに気になることがあれば、いつでもご連絡ください。"
+]
+},
+change: {
+polite: [
+"ご連絡いただき、ありがとうございます。ご注文内容の変更について、ご希望に添えるかどうかご不安なところへ、ご案内いたします。",
+"ご注文番号につきまして、を承りました。発送準備の状況によっては対応できない場合もございますため、結果はあらためてメールでご連絡いたします。",
+"ご返金が発生する場合は、決済方法に応じてほどお時間をいただきます。進み具合が分からないときは、このメールへご返信ください。"
+],
+casual: [
+"ご連絡ありがとうございます。注文の変更、大丈夫かどうか気になりますよね。",
+"ご注文番号のを受け付けました。発送準備のタイミングによっては難しい場合もあるので、結果はメールでお知らせしますね。",
+"返金がある場合は、決済方法によってほどかかります。分からないことがあれば、このメールに返信してください。"
+]
+},
+notdelivered: {
+polite: [
+"ご連絡いただき、ありがとうございます。商品が届かず、ご心配をおかけしております。お待たせして申し訳ございません。",
+"配送状況を確認いたしましたところ、現在となっております。追跡番号はですので、配送会社の追跡ページでもご確認いただけます。",
+"を過ぎても届かない場合は、配送会社へ調査を依頼いたしますので、お手数ですが再度ご連絡ください。こちらでも引き続き確認いたします。"
+],
+casual: [
+"ご連絡ありがとうございます。商品が届かなくて心配ですよね。お待たせしてすみません。",
+"配送状況を確認したところ、今はになっています。追跡番号はなので、配送会社のページでも確認できます。",
+"を過ぎても届かないときは、配送会社に調べてもらうので、もう一度ご連絡ください。こちらでも確認を続けます。"
+]
+},
+other: {
+polite: [
+"お問い合わせいただき、ありがとうございます。ご不明な点があり、ご不便をおかけしております。",
+"ご質問の件につきまして、。詳細を確認する必要がある場合は、担当へ確認のうえ、あらためてご連絡いたします。",
+"そのほかにもお困りのことがございましたら、このメールへご返信ください。順次ご案内いたします。"
+],
+casual: [
+"お問い合わせありがとうございます。分からないところがあって困りますよね。",
+"ご質問の件ですが、。確認が必要な場合は、調べてからあらためてご連絡します。",
+"ほかに困ったことがあれば、このメールに返信してください。"
+]
+}
+};
+
+function generate(){
+var customer = val("customer");
+var shop = val("shop");
+var type = document.getElementById("type").value;
+var tone = document.querySelector('input[name="tone"]:checked').value;
+var body = templates[type][tone];
+
+var lines = [];
+if (customer) lines.push(customer + " 様");
+lines.push("");
+if (tone === "polite") {
+lines.push("いつもご利用いただき、誠にありがとうございます。");
+} else {
+lines.push("いつもご利用ありがとうございます。");
+}
+lines.push("");
+lines.push(body[0]);
+lines.push("");
+lines.push(body[1]);
+lines.push("");
+lines.push(body[2]);
+if (tone === "polite") {
+lines.push("");
+lines.push("このたびはご利用いただき、ありがとうございました。");
+}
+if (shop) {
+lines.push("");
+lines.push(shop);
+}
+document.getElementById("output").value = lines.join("\n");
+var btn = document.getElementById("copy");
+btn.textContent = "コピーする";
+btn.classList.remove("done");
+}
+
+document.getElementById("generate").addEventListener("click", generate);
+
+document.getElementById("copy").addEventListener("click", function(){
+var out = document.getElementById("output");
+if (!out.value) return;
+var btn = this;
+function done(){
+btn.textContent = "コピーしました";
+btn.classList.add("done");
+setTimeout(function(){ btn.textContent = "コピーする"; btn.classList.remove("done");}, 2000);
+}
+if (navigator.clipboard && navigator.clipboard.writeText) {
+navigator.clipboard.writeText(out.value).then(done, function(){ out.select(); document.execCommand("copy"); done();});
+} else {
+out.select();
+document.execCommand("copy");
+done();
+}
+});
+})();
+</script>
+</body>
+</html>

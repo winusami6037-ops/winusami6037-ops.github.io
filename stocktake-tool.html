@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>棚卸しチェックツール｜roi EC自動化</title>
+<style>
+:root{
+--navy:#14304D; --teal:#12B5A5; --bg:#F4F7FA; --card:#FFFFFF;
+--text:#1E2A36; --muted:#5B6B7A; --line:#D8E1E9; --yellow:#FFD94D;
+}
+*{box-sizing:border-box; margin:0; padding:0;}
+body{font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans","Noto Sans JP",sans-serif; background:var(--bg); color:var(--text); line-height:1.7;}
+header{background:var(--navy); color:#fff; padding:28px 20px 24px;}
+header .inner{max-width:760px; margin:0 auto;}
+header h1{font-size:24px; letter-spacing:.02em;}
+header h1 .accent{color:var(--teal);}
+header p{font-size:14px; color:#C9D6E2; margin-top:6px;}
+main{max-width:760px; margin:0 auto; padding:20px 16px 40px;}
+.card{background:var(--card); border:1px solid var(--line); border-radius:12px; padding:20px; margin-bottom:16px;}
+.card h2{font-size:16px; color:var(--navy); border-left:5px solid var(--teal); padding-left:10px; margin-bottom:14px;}
+label{display:block; font-size:13px; font-weight:700; color:var(--navy); margin:12px 0 4px;}
+label .opt, span.opt{font-weight:400; color:var(--muted); font-size:12px;}
+input[type="text"], input[type="number"]{width:100%; padding:10px 12px; border:1px solid var(--line); border-radius:8px; font-size:15px; background:#fff; color:var(--text);}
+input[type="text"]:focus, input[type="number"]:focus{outline:2px solid var(--teal); outline-offset:1px;}
+.row{display:grid; grid-template-columns:1fr 140px; gap:12px;}
+@media (max-width:560px){.row{grid-template-columns:1fr;}}
+button.gen{width:100%; background:var(--teal); color:#fff; border:none; border-radius:10px; padding:14px; font-size:16px; font-weight:700; cursor:pointer; margin-top:16px;}
+button.gen:active{opacity:.85;}
+button.add{width:100%; background:var(--navy); color:#fff; border:none; border-radius:10px; padding:12px; font-size:15px; font-weight:700; cursor:pointer; margin-top:12px;}
+button.add:active{opacity:.85;}
+.out-head{display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;}
+.out-head h2{margin-bottom:0;}
+button.copy{background:var(--navy); color:#fff; border:none; border-radius:8px; padding:8px 16px; font-size:13px; font-weight:700; cursor:pointer;}
+button.copy.done{background:var(--teal);}
+textarea{width:100%; min-height:220px; border:1px solid var(--line); border-radius:8px; padding:14px; font-size:14px; line-height:1.8; font-family:inherit; background:#FBFDFE; color:var(--text); resize:vertical;}
+.hint{font-size:12px; color:var(--muted); margin-top:8px;}
+.point{background:#FFF8DC; border:1px solid var(--yellow); border-radius:10px; padding:14px 16px; font-size:13px; margin-bottom:16px;}
+.point strong{color:var(--navy);}
+.progress{font-size:15px; font-weight:700; color:var(--navy); margin-bottom:10px;}
+.progress .num{color:var(--teal); font-size:20px;}
+.bar{height:10px; background:var(--line); border-radius:999px; overflow:hidden; margin-bottom:14px;}
+.bar > div{height:100%; background:var(--teal); width:0%; transition:width .2s;}
+table{width:100%; border-collapse:collapse; font-size:14px;}
+th, td{border-bottom:1px solid var(--line); padding:8px 6px; text-align:left; vertical-align:middle;}
+th{color:var(--navy); font-size:12px;}
+td.c, th.c{text-align:center; width:56px;}
+td.n, th.n{text-align:right; width:80px;}
+tr.done-row td.name{text-decoration:line-through; color:var(--muted);}
+input.chk{width:20px; height:20px; accent-color:var(--teal); cursor:pointer;}
+button.del{background:#fff; color:var(--muted); border:1px solid var(--line); border-radius:6px; padding:4px 10px; font-size:12px; cursor:pointer;}
+.empty{color:var(--muted); font-size:13px; padding:10px 0;}
+footer{text-align:center; color:var(--muted); font-size:12px; padding:20px 0 32px;}
+</style>
+</head>
+<body>
+<header>
+<div class="inner">
+<h1>棚卸し<span class="accent">チェック</span>ツール</h1>
+<p>商品を1行ずつ追加して、数えたらチェック。最後に結果を「棚卸しメモ」としてコピーできます。このページの中だけで完結します（保存はされません）。</p>
+</div>
+</header>
+<main>
+<div class="point">
+<strong>使い方のコツ：</strong> 棚卸しは「数える順番」を先に決めて、棚の端から1方向に進むと数え漏れが減ります。数え終わった行からチェックを入れていくと、残りが一目で分かります。
+</div>
+
+<div class="card">
+<h2>1. 商品を追加</h2>
+<div class="row">
+<div>
+<label for="item">商品名</label>
+<input type="text" id="item" placeholder="例：木製カトラリーセット">
+</div>
+<div>
+<label for="count">数え終わった数 <span class="opt">（任意）</span></label>
+<input type="number" id="count" min="0" placeholder="例：24">
+</div>
+</div>
+<button class="add" id="add">＋ 行を追加する</button>
+<p class="hint">数はあとからでも入力・修正できます。まず商品名だけ並べてから数え始めるのもおすすめです。</p>
+</div>
+
+<div class="card">
+<h2>2. チェックリスト</h2>
+<p class="progress"><span class="num" id="done-count">0</span> 件完了 ／ 全 <span class="num" id="total-count">0</span> 件（<span id="remain-count">0</span> 件残り）</p>
+<div class="bar"><div id="bar-fill"></div></div>
+<table>
+<thead>
+<tr><th class="c">完了</th><th>商品名</th><th class="n">数えた数</th><th class="c">削除</th></tr>
+</thead>
+<tbody id="list-body"></tbody>
+</table>
+<p class="empty" id="empty-msg">まだ商品が追加されていません。「1. 商品を追加」から1行ずつ足してください。</p>
+</div>
+
+<div class="card">
+<div class="out-head">
+<h2>3. 棚卸しメモ</h2>
+<button class="copy" id="copy">コピーする</button>
+</div>
+<textarea id="output" readonly placeholder="「棚卸しメモを生成する」を押すと、ここに結果が表示されます。"></textarea>
+<button class="gen" id="generate">棚卸しメモを生成する</button>
+<p class="hint">生成したメモは、在庫管理シートへの転記や、作業記録としてそのまま使えます。</p>
+</div>
+</main>
+<footer>roi｜EC自動化</footer>
+
+<script>
+(function(){
+var listBody = document.getElementById("list-body");
+var emptyMsg = document.getElementById("empty-msg");
+
+function refresh(){
+var rows = listBody.querySelectorAll("tr");
+var total = rows.length;
+var done = 0;
+rows.forEach(function(tr){
+var chk = tr.querySelector("input.chk");
+if (chk && chk.checked) done++;
+});
+document.getElementById("total-count").textContent = total;
+document.getElementById("done-count").textContent = done;
+document.getElementById("remain-count").textContent = total - done;
+document.getElementById("bar-fill").style.width = total ? Math.round(done / total * 100) + "%" : "0%";
+emptyMsg.style.display = total ? "none" : "block";
+}
+
+function addRow(name, count){
+var tr = document.createElement("tr");
+
+var tdChk = document.createElement("td");
+tdChk.className = "c";
+var chk = document.createElement("input");
+chk.type = "checkbox";
+chk.className = "chk";
+chk.addEventListener("change", function(){
+tr.classList.toggle("done-row", chk.checked);
+refresh();
+});
+tdChk.appendChild(chk);
+
+var tdName = document.createElement("td");
+tdName.className = "name";
+tdName.textContent = name;
+
+var tdNum = document.createElement("td");
+tdNum.className = "n";
+var num = document.createElement("input");
+num.type = "number";
+num.min = "0";
+num.value = (count === "" || count === null || typeof count === "undefined") ? "" : count;
+num.setAttribute("aria-label", "数えた数");
+tdNum.appendChild(num);
+
+var tdDel = document.createElement("td");
+tdDel.className = "c";
+var del = document.createElement("button");
+del.type = "button";
+del.className = "del";
+del.textContent = "削除";
+del.addEventListener("click", function(){
+listBody.removeChild(tr);
+refresh();
+});
+tdDel.appendChild(del);
+
+tr.appendChild(tdChk);
+tr.appendChild(tdName);
+tr.appendChild(tdNum);
+tr.appendChild(tdDel);
+listBody.appendChild(tr);
+refresh();
+}
+
+document.getElementById("add").addEventListener("click", function(){
+var nameInput = document.getElementById("item");
+var countInput = document.getElementById("count");
+var name = nameInput.value.trim();
+if (!name) {
+nameInput.focus();
+return;
+}
+addRow(name, countInput.value.trim());
+nameInput.value = "";
+countInput.value = "";
+nameInput.focus();
+});
+
+document.getElementById("item").addEventListener("keydown", function(e){
+if (e.key === "Enter") {
+e.preventDefault();
+document.getElementById("add").click();
+}
+});
+
+document.getElementById("generate").addEventListener("click", function(){
+var rows = listBody.querySelectorAll("tr");
+var lines = [];
+var now = new Date();
+var pad = function(n){ return (n < 10 ? "0" : "") + n; };
+lines.push("棚卸しメモ（" + now.getFullYear() + "/" + pad(now.getMonth() + 1) + "/" + pad(now.getDate()) + " " + pad(now.getHours()) + ":" + pad(now.getMinutes()) + "）");
+lines.push("");
+if (!rows.length) {
+lines.push("（商品が登録されていません）");
+} else {
+var done = 0;
+var totalCount = 0;
+rows.forEach(function(tr, i){
+var chk = tr.querySelector("input.chk");
+var name = tr.querySelector("td.name").textContent;
+var numVal = tr.querySelector('input[type="number"]').value.trim();
+var mark = chk.checked ? "済" : "未";
+if (chk.checked) done++;
+var numText = numVal === "" ? "（数 未入力）" : numVal + " 個";
+if (numVal !== "" && !isNaN(Number(numVal))) totalCount += Number(numVal);
+lines.push((i + 1) + ". [" + mark + "] " + name + "：" + numText);
+});
+lines.push("");
+lines.push("進捗：" + rows.length + "件中 " + done + "件完了");
+lines.push("数えた数の合計：" + totalCount + " 個");
+}
+document.getElementById("output").value = lines.join("\n");
+var btn = document.getElementById("copy");
+btn.textContent = "コピーする";
+btn.classList.remove("done");
+});
+
+document.getElementById("copy").addEventListener("click", function(){
+var out = document.getElementById("output");
+if (!out.value) return;
+var btn = this;
+function done(){
+btn.textContent = "コピーしました";
+btn.classList.add("done");
+setTimeout(function(){ btn.textContent = "コピーする"; btn.classList.remove("done");}, 2000);
+}
+if (navigator.clipboard && navigator.clipboard.writeText) {
+navigator.clipboard.writeText(out.value).then(done, function(){ out.select(); document.execCommand("copy"); done();});
+} else {
+out.select();
+document.execCommand("copy");
+done();
+}
+});
+
+refresh();
+})();
+</script>
+</body>
+</html>
