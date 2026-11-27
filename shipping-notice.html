@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>発送通知文ジェネレータ｜roi EC自動化</title>
+<style>
+:root{
+--navy:#14304D; --teal:#12B5A5; --bg:#F4F7FA; --card:#FFFFFF;
+--text:#1E2A36; --muted:#5B6B7A; --line:#D8E1E9; --yellow:#FFD94D;
+}
+*{box-sizing:border-box; margin:0; padding:0;}
+body{font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans","Noto Sans JP",sans-serif; background:var(--bg); color:var(--text); line-height:1.7;}
+header{background:var(--navy); color:#fff; padding:28px 20px 24px;}
+header.inner{max-width:760px; margin:0 auto;}
+header h1{font-size:24px; letter-spacing:.02em;}
+header h1.accent{color:var(--teal);}
+header p{font-size:14px; color:#C9D6E2; margin-top:6px;}
+main{max-width:760px; margin:0 auto; padding:20px 16px 40px;}
+.card{background:var(--card); border:1px solid var(--line); border-radius:12px; padding:20px; margin-bottom:16px;}
+.card h2{font-size:16px; color:var(--navy); border-left:5px solid var(--teal); padding-left:10px; margin-bottom:14px;}
+label{display:block; font-size:13px; font-weight:700; color:var(--navy); margin:12px 0 4px;}
+label.opt{font-weight:400; color:var(--muted); font-size:12px;}
+input[type="text"], select{width:100%; padding:10px 12px; border:1px solid var(--line); border-radius:8px; font-size:15px; background:#fff; color:var(--text);}
+input[type="text"]:focus, select:focus{outline:2px solid var(--teal); outline-offset:1px;}
+.row{display:grid; grid-template-columns:1fr 1fr; gap:12px;}
+@media (max-width:560px){.row{grid-template-columns:1fr;}}
+.radio-group{display:flex; gap:8px; flex-wrap:wrap; margin-top:4px;}
+.radio-group label{margin:0; font-weight:400;}
+.radio-chip{display:inline-flex; align-items:center; gap:6px; border:1px solid var(--line); border-radius:999px; padding:6px 14px; font-size:14px; cursor:pointer; background:#fff;}
+.radio-chip input{accent-color:var(--teal);}
+button.gen{width:100%; background:var(--teal); color:#fff; border:none; border-radius:10px; padding:14px; font-size:16px; font-weight:700; cursor:pointer; margin-top:16px;}
+button.gen:active{opacity:.85;}
+.out-head{display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;}
+.out-head h2{margin-bottom:0;}
+button.copy{background:var(--navy); color:#fff; border:none; border-radius:8px; padding:8px 16px; font-size:13px; font-weight:700; cursor:pointer;}
+button.copy.done{background:var(--teal);}
+textarea{width:100%; min-height:300px; border:1px solid var(--line); border-radius:8px; padding:14px; font-size:14px; line-height:1.8; font-family:inherit; background:#FBFDFE; color:var(--text); resize:vertical;}
+.hint{font-size:12px; color:var(--muted); margin-top:8px;}
+.point{background:#FFF8DC; border:1px solid var(--yellow); border-radius:10px; padding:14px 16px; font-size:13px; margin-bottom:16px;}
+.point strong{color:var(--navy);}
+footer{text-align:center; color:var(--muted); font-size:12px; padding:20px 0 32px;}
+</style>
+</head>
+<body>
+<header>
+<div class="inner">
+<h1>発送通知文<span class="accent">ジェネレータ</span></h1>
+<p>発送したあとの通知文を、3点セット（発送しました＋追跡番号＋調べ方）で組み立てます。入力して、生成して、コピーするだけ。</p>
+</div>
+</header>
+<main>
+<div class="point">
+<strong>使い方のコツ：</strong> 発送通知は「発送しました」「追跡番号」「追跡の調べ方」の3点がそろっていると、「届かない」という問い合わせが減ります。このツールはその型で文面を作ります。
+</div>
+
+<div class="card">
+<h2>1. 発送内容を入力</h2>
+<div class="row">
+<div>
+<label for="customer">お客様名 <span class="opt">（任意）</span></label>
+<input type="text" id="customer" placeholder="例：佐藤 美咲">
+</div>
+<div>
+<label for="shop">店舗名・差出人名 <span class="opt">（任意）</span></label>
+<input type="text" id="shop" placeholder="例：雑貨店サンプル">
+</div>
+</div>
+<label for="item">商品名</label>
+<input type="text" id="item" placeholder="例：木製カトラリーセット">
+<div class="row">
+<div>
+<label for="carrier">配送会社</label>
+<select id="carrier">
+<option value="ヤマト運輸">ヤマト運輸</option>
+<option value="佐川急便">佐川急便</option>
+<option value="日本郵便">日本郵便</option>
+<option value="その他">その他</option>
+</select>
+</div>
+<div>
+<label for="tracking">追跡番号（送り状番号）</label>
+<input type="text" id="tracking" placeholder="例：1234-5678-9012">
+</div>
+</div>
+<label>文面のトーン</label>
+<div class="radio-group">
+<span class="radio-chip"><input type="radio" name="tone" id="tone-normal" value="normal" checked><label for="tone-normal">通常</label></span>
+<span class="radio-chip"><input type="radio" name="tone" id="tone-polite" value="polite"><label for="tone-polite">より丁寧</label></span>
+</div>
+<button class="gen" id="generate">通知文を生成する</button>
+</div>
+
+<div class="card">
+<div class="out-head">
+<h2>2. 生成された通知文</h2>
+<button class="copy" id="copy">コピーする</button>
+</div>
+<textarea id="output" readonly placeholder="「通知文を生成する」を押すと、ここに文面が表示されます。"></textarea>
+<p class="hint">件名は1行目に入っています。メール・メッセージの送信前に、商品名と追跡番号が合っているかだけ確認してください。</p>
+</div>
+</main>
+<footer>roi｜EC自動化</footer>
+
+<script>
+(function(){
+var carrierGuide = {
+"ヤマト運輸": "ヤマト運輸の「荷物お問い合わせシステム」で、追跡番号を入力すると現在の状況をご確認いただけます。",
+"佐川急便": "佐川急便の「荷物お問い合わせサービス」で、追跡番号（お問い合せ送り状No.）を入力すると現在の状況をご確認いただけます。",
+"日本郵便": "日本郵便の「郵便追跡サービス」で、追跡番号（お問い合わせ番号）を入力すると現在の状況をご確認いただけます。",
+"その他": "配送会社の追跡ページで、追跡番号を入力すると現在の状況をご確認いただけます。"
+};
+
+function val(id){ return document.getElementById(id).value.trim();}
+
+function generate(){
+var customer = val("customer");
+var shop = val("shop");
+var item = val("item") || "ご注文の商品";
+var carrier = document.getElementById("carrier").value;
+var tracking = val("tracking") || "（追跡番号）";
+var tone = document.querySelector('input[name="tone"]:checked').value;
+
+var lines = [];
+if (tone === "polite") {
+lines.push("件名：" + item + "を発送いたしました");
+lines.push("");
+if (customer) lines.push(customer + " 様");
+lines.push("");
+lines.push("いつもご利用いただき、誠にありがとうございます。");
+lines.push("ご注文いただきました下記の商品を発送いたしましたので、ご連絡いたします。");
+lines.push("");
+lines.push("■ 商品名：" + item);
+lines.push("■ 配送会社：" + carrier);
+lines.push("■ 追跡番号：" + tracking);
+lines.push("");
+lines.push(carrierGuide[carrier]);
+lines.push("到着まで今しばらくお待ちいただけますと幸いです。");
+lines.push("お手元に届きましたら、内容のご確認をお願いいたします。万が一、商品に不備がございましたら、お手数ですがご連絡ください。");
+lines.push("");
+lines.push("このたびはご注文いただき、誠にありがとうございました。");
+} else {
+lines.push("件名：" + item + "を発送しました");
+lines.push("");
+if (customer) lines.push(customer + " 様");
+lines.push("");
+lines.push("いつもご利用いただきありがとうございます。");
+lines.push("ご注文いただいた商品を発送しました。");
+lines.push("");
+lines.push("■ 商品名：" + item);
+lines.push("■ 配送会社：" + carrier);
+lines.push("■ 追跡番号：" + tracking);
+lines.push("");
+lines.push(carrierGuide[carrier]);
+lines.push("到着まで今しばらくお待ちください。届きましたら内容のご確認をお願いします。");
+lines.push("");
+lines.push("ご注文ありがとうございました。");
+}
+if (shop) {
+lines.push("");
+lines.push(shop);
+}
+document.getElementById("output").value = lines.join("\n");
+var btn = document.getElementById("copy");
+btn.textContent = "コピーする";
+btn.classList.remove("done");
+}
+
+document.getElementById("generate").addEventListener("click", generate);
+
+document.getElementById("copy").addEventListener("click", function(){
+var out = document.getElementById("output");
+if (!out.value) return;
+var btn = this;
+function done(){
+btn.textContent = "コピーしました";
+btn.classList.add("done");
+setTimeout(function(){ btn.textContent = "コピーする"; btn.classList.remove("done");}, 2000);
+}
+if (navigator.clipboard && navigator.clipboard.writeText) {
+navigator.clipboard.writeText(out.value).then(done, function(){ out.select(); document.execCommand("copy"); done();});
+} else {
+out.select();
+document.execCommand("copy");
+done();
+}
+});
+})();
+</script>
+</body>
+</html>
