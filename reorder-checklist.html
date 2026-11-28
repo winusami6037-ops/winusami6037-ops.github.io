@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>発注チェックリスト｜発注点を計算して在庫切れを防ぐ、印刷して使える1ページ</title>
+<meta name="description" content="在庫数と1日あたりの販売数から発注点を計算し、発注予定日までを順番に確認できる、印刷して使える1ページの発注チェックリスト。EC・ネットショップの発注作業に。無料・登録不要。">
+<meta property="og:title" content="発注チェックリスト｜発注点を計算して在庫切れを防ぐ、印刷して使える1ページ">
+<meta property="og:description" content="在庫数と1日あたりの販売数から発注点を計算し、発注予定日までを順番に確認できる、印刷して使える1ページのチェックリストです。">
+<meta property="og:type" content="website">
+<style>
+:root{
+--navy:#14304D; --teal:#12B5A5; --bg:#F4F7FA; --card:#FFFFFF;
+--text:#1E2A36; --muted:#5B6B7A; --line:#D8E1E9; --yellow:#FFD94D;
+}
+*{box-sizing:border-box; margin:0; padding:0;}
+body{font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans","Noto Sans JP",sans-serif; background:var(--bg); color:var(--text); line-height:1.7;}
+header{background:var(--navy); color:#fff; padding:28px 20px 24px;}
+header .inner{max-width:760px; margin:0 auto;}
+header h1{font-size:24px; letter-spacing:.02em;}
+header h1 .accent{color:var(--teal);}
+header p{font-size:14px; color:#C9D6E2; margin-top:6px;}
+main{max-width:760px; margin:0 auto; padding:20px 16px 40px;}
+.card{background:var(--card); border:1px solid var(--line); border-radius:12px; padding:20px; margin-bottom:16px;}
+.card h2{font-size:16px; color:var(--navy); border-left:5px solid var(--teal); padding-left:10px; margin-bottom:14px;}
+.point{background:#FFF8DC; border:1px solid var(--yellow); border-radius:10px; padding:14px 16px; font-size:13px; margin-bottom:16px;}
+.point strong{color:var(--navy);}
+.hint{font-size:12px; color:var(--muted); margin-top:8px;}
+.meta-line{font-size:14px; margin-bottom:14px;}
+ul.check{list-style:none;}
+ul.check li{border-bottom:1px solid var(--line); padding:10px 2px;}
+ul.check li:last-child{border-bottom:none;}
+ul.check label{display:flex; align-items:flex-start; gap:10px; cursor:pointer; font-size:15px;}
+ul.check input[type="checkbox"]{width:20px; height:20px; margin-top:4px; flex:none; accent-color:var(--teal);}
+.memo{font-size:15px;}
+.memo p{margin:10px 0;}
+.blank{display:inline-block; min-width:64px; border-bottom:2px solid var(--navy); text-align:center; padding:0 4px;}
+.blank.wide{min-width:110px;}
+.formula{background:#FBFDFE; border:1px solid var(--line); border-radius:10px; padding:14px 16px; font-size:15px; margin:10px 0;}
+.links a{color:var(--navy); font-weight:700;}
+.links li{margin:6px 0 6px 18px; font-size:14px;}
+.btn{display:inline-block; background:var(--teal); color:#fff; font-weight:700; font-size:14px; border:none; border-radius:8px; padding:10px 22px; cursor:pointer;}
+footer{text-align:center; color:var(--muted); font-size:12px; padding:20px 0 32px;}
+@page{margin:12mm;}
+@media print{
+body{background:#fff;}
+header{padding:16px 12px 12px;}
+main{padding:8px 0 0;}
+.card{border-color:#999; break-inside:avoid;}
+.point{break-inside:avoid;}
+.noprint{display:none !important;}
+footer{padding:8px 0 0;}
+*{-webkit-print-color-adjust:exact; print-color-adjust:exact;}
+ul.check input[type="checkbox"]{appearance:none; -webkit-appearance:none; border:2px solid var(--navy); border-radius:3px; background:#fff;}
+}
+</style>
+</head>
+<body>
+<header>
+<div class="inner">
+<h1>発注<span class="accent">チェックリスト</span></h1>
+<p>週に1回、在庫を見ながら上から順にチェックするだけ。発注点の計算から発注予定日までを、1ページで確認できます。印刷して、在庫棚のそばに置いて使うのがおすすめです。</p>
+</div>
+</header>
+<main>
+<div class="point">
+<strong>考え方：</strong> 発注点は「1日販売数 ×（納期日数＋安全日数）」です。在庫がこの数を下回ったら発注の合図。納期分の在庫と安全在庫を合わせた分が残っているうちに注文しておく、という考え方です。1日販売数は、直近1〜2週間の実績から平均を取ると現実に近くなります。
+</div>
+
+<div class="card">
+<h2>チェック項目</h2>
+<p class="meta-line">商品名：<span class="blank wide"></span>　チェック日：<span class="blank"></span>月<span class="blank"></span>日</p>
+<ul class="check">
+<li><label><input type="checkbox"> 在庫数を数えた（棚の実数と在庫表の両方を確認）</label></li>
+<li><label><input type="checkbox"> 1日販売数を出した（直近1〜2週間の販売実績の平均）</label></li>
+<li><label><input type="checkbox"> 仕入れ先の納期（日数）と安全在庫（日数分）を決めた</label></li>
+<li><label><input type="checkbox"> 発注点＝1日販売数 ×（納期＋安全日数）を計算した</label></li>
+<li><label><input type="checkbox"> 現在の在庫が発注点を下回っていないか確認した</label></li>
+<li><label><input type="checkbox"> 発注までの日数と発注予定日を出した</label></li>
+<li><label><input type="checkbox"> 発注予定日をカレンダーに入れた</label></li>
+<li><label><input type="checkbox"> 推奨発注数を出した（納期＋安全在庫＋次の発注サイクル分 − 現在の在庫）</label></li>
+<li><label><input type="checkbox"> 発注書（注文）を送った</label></li>
+<li><label><input type="checkbox"> 納品予定日を記録した</label></li>
+</ul>
+<p class="hint">在庫が発注点を下回っていたら、発注予定日は「今日」です。予定日を待たずに発注してください。</p>
+</div>
+
+<div class="card memo">
+<h2>計算メモ欄</h2>
+<div class="formula">
+発注点 ＝ 1日販売数 <span class="blank"></span>個 ×（納期 <span class="blank"></span>日 ＋ 安全日数 <span class="blank"></span>日）＝ <span class="blank"></span>個
+</div>
+<p>現在の在庫：<span class="blank"></span>個</p>
+<p>発注までの日数 ＝（現在の在庫 − 発注点）÷ 1日販売数 ＝ <span class="blank"></span>日</p>
+<p>推奨発注数 ＝ 1日販売数 ×（納期＋安全日数＋発注サイクル <span class="blank"></span>日）− 現在の在庫 ＝ <span class="blank"></span>個</p>
+<p>発注予定日：<span class="blank"></span>月<span class="blank"></span>日　／　納品予定日：<span class="blank"></span>月<span class="blank"></span>日</p>
+<p class="hint">数字を入れるだけの自動計算版もあります（下のリンク）。紙で残したいときはこのメモ欄に書き写してください。</p>
+</div>
+
+<div class="card links">
+<h2>あわせて使える無料ツール</h2>
+<ul>
+<li><a href="https://winusami6037-ops.github.io/reorder-tool.html">発注タイミング計算ツール</a>（このチェックリストの自動計算版）<br>https://winusami6037-ops.github.io/reorder-tool.html</li>
+<li><a href="https://winusami6037-ops.github.io/home.html">無料ツールまとめ（ハブページ）</a><br>https://winusami6037-ops.github.io/home.html</li>
+</ul>
+<p style="margin-top:14px;" class="noprint"><button class="btn" onclick="window.print()">このページを印刷する</button></p>
+</div>
+</main>
+<footer>roi｜EC自動化</footer>
+</body>
+</html>
