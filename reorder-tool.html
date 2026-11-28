@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>発注タイミング計算ツール｜在庫が発注点を下回る日と推奨発注数を自動計算</title>
+<meta name="description" content="現在の在庫数と1日あたりの販売数、仕入れ先の納期、安全在庫を入れるだけで、発注点・発注までの日数・発注予定日・推奨発注数がその場で出る無料の発注タイミング計算ツール。EC・ネットショップの在庫切れ防止に。登録不要、スマホ対応で、計算はすべてブラウザの中で行われます。">
+<meta property="og:title" content="発注タイミング計算ツール｜在庫が発注点を下回る日と推奨発注数を自動計算">
+<meta property="og:description" content="現在の在庫数と1日あたりの販売数、仕入れ先の納期、安全在庫を入れるだけで、発注点・発注までの日数・発注予定日・推奨発注数がその場で出ます。EC・ネットショップの在庫切れ防止に。">
+<meta property="og:type" content="website">
+<style>
+:root{
+--navy:#14304D; --teal:#12B5A5; --bg:#F4F7FA; --card:#FFFFFF;
+--text:#1E2A36; --muted:#5B6B7A; --line:#D8E1E9; --yellow:#FFD94D;
+}
+*{box-sizing:border-box; margin:0; padding:0;}
+body{font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans","Noto Sans JP",sans-serif; background:var(--bg); color:var(--text); line-height:1.7;}
+header{background:var(--navy); color:#fff; padding:28px 20px 24px;}
+header.inner{max-width:760px; margin:0 auto;}
+header h1{font-size:24px; letter-spacing:.02em;}
+header h1.accent{color:var(--teal);}
+header p{font-size:14px; color:#C9D6E2; margin-top:6px;}
+main{max-width:760px; margin:0 auto; padding:20px 16px 40px;}
+.card{background:var(--card); border:1px solid var(--line); border-radius:12px; padding:20px; margin-bottom:16px;}
+.card h2{font-size:16px; color:var(--navy); border-left:5px solid var(--teal); padding-left:10px; margin-bottom:14px;}
+label{display:block; font-size:13px; font-weight:700; color:var(--navy); margin:12px 0 4px;}
+label.opt{font-weight:400; color:var(--muted); font-size:12px;}
+input[type="text"], input[type="number"], select{width:100%; padding:10px 12px; border:1px solid var(--line); border-radius:8px; font-size:15px; background:#fff; color:var(--text);}
+input[type="text"]:focus, input[type="number"]:focus, select:focus{outline:2px solid var(--teal); outline-offset:1px;}
+.row{display:grid; grid-template-columns:1fr 1fr; gap:12px;}
+@media (max-width:560px){.row{grid-template-columns:1fr;}}
+.hint{font-size:12px; color:var(--muted); margin-top:8px;}
+.point{background:#FFF8DC; border:1px solid var(--yellow); border-radius:10px; padding:14px 16px; font-size:13px; margin-bottom:16px;}
+.point strong{color:var(--navy);}
+.result{background:#FBFDFE; border:1px solid var(--line); border-radius:10px; padding:16px; margin-top:16px;}
+.result .big{display:flex; gap:24px; flex-wrap:wrap;}
+.result .big .item{min-width:140px;}
+.result.num{font-size:28px; font-weight:800; color:var(--navy); line-height:1.3;}
+.result.num.teal{color:var(--teal);}
+.result.cap{font-size:12px; color:var(--muted); font-weight:700;}
+table.detail{width:100%; border-collapse:collapse; margin-top:14px; font-size:14px;}
+table.detail th, table.detail td{padding:7px 8px; border-bottom:1px solid var(--line); text-align:left;}
+table.detail th{color:var(--navy); font-weight:700; white-space:nowrap;}
+table.detail td{text-align:right; font-variant-numeric:tabular-nums;}
+table.detail tr:last-child th, table.detail tr:last-child td{border-bottom:none;}
+footer{text-align:center; color:var(--muted); font-size:12px; padding:20px 0 32px;}
+</style>
+</head>
+<body>
+<header>
+<div class="inner">
+<h1>発注タイミング計算<span class="accent">ツール</span></h1>
+<p>現在の在庫数と1日あたりの販売数、仕入れ先の納期、安全在庫を入れるだけで、発注点・発注までの日数・発注予定日・推奨発注数がその場で出ます。</p>
+</div>
+</header>
+<main>
+<div class="point">
+<strong>使い方のコツ：</strong> 発注点は「1日販売数 ×（納期日数＋安全日数）」です。在庫がこの数を下回ったら発注の合図で、納期分の在庫と安全在庫を合わせた分が残っているうちに注文しておく、という考え方です。1日販売数は、直近1〜2週間の実績から平均を取ると現実に近くなります。
+</div>
+
+<div class="card">
+<h2>1. 在庫と販売の数字を入れる</h2>
+<div class="row">
+<div>
+<label for="stock">現在の在庫数（個）</label>
+<input type="number" id="stock" inputmode="numeric" min="0" placeholder="例：120">
+</div>
+<div>
+<label for="daily">1日あたりの平均販売数（個／日）</label>
+<input type="number" id="daily" inputmode="decimal" min="0" step="0.1" placeholder="例：5">
+</div>
+</div>
+<div class="row">
+<div>
+<label for="lead">仕入れ先の納期（日数）</label>
+<input type="number" id="lead" inputmode="numeric" min="0" placeholder="例：5">
+</div>
+<div>
+<label for="safety">安全在庫（日数分）</label>
+<input type="number" id="safety" inputmode="numeric" min="0" placeholder="例：3">
+</div>
+</div>
+<label for="cycle">発注サイクル（日数）</label>
+<input type="number" id="cycle" inputmode="numeric" min="0" value="7" placeholder="例：7">
+<p class="hint">発注サイクルは「何日ごとに発注するか」です。週に1回なら7、月に2回なら15のように入れます。推奨発注数の計算に使います。</p>
+
+<div class="result">
+<div class="big">
+<div class="item">
+<div class="cap">発注点</div>
+<div class="num" id="pointOut">—</div>
+</div>
+<div class="item">
+<div class="cap">発注までの日数</div>
+<div class="num teal" id="daysOut">—</div>
+</div>
+</div>
+<div class="big" style="margin-top:12px;">
+<div class="item">
+<div class="cap">発注予定日</div>
+<div class="num" id="dateOut">—</div>
+</div>
+<div class="item">
+<div class="cap">推奨発注数</div>
+<div class="num teal" id="qtyOut">—</div>
+</div>
+</div>
+<p class="hint" id="orderNote">数字を入れると、ここに発注の目安が出ます。</p>
+<table class="detail">
+<tr><th>現在の在庫数</th><td id="dStock">—</td></tr>
+<tr><th>発注点</th><td id="dPoint">—</td></tr>
+<tr><th>1日あたりの平均販売数</th><td id="dDaily">—</td></tr>
+<tr><th>納期分の必要数（納期日数 × 1日販売数）</th><td id="dLead">—</td></tr>
+<tr><th>安全在庫数（安全日数 × 1日販売数）</th><td id="dSafety">—</td></tr>
+</table>
+</div>
+</div>
+</main>
+<footer>roi｜EC自動化</footer>
+
+<script>
+(function(){
+/*CALC-START*/
+function num(v){
+var n = parseFloat(v);
+if (isNaN(n) || n < 0) return 0;
+return n;
+}
+function calcReorder(stock, daily, lead, safety, cycle){
+if (daily <= 0) return null;
+var point = daily * (lead + safety);
+var daysUntil = (stock - point) / daily;
+var qty = daily * (lead + safety + cycle) - stock;
+if (qty < 0) qty = 0;
+return {
+point: point,
+daysUntil: daysUntil,
+qty: qty,
+leadQty: daily * lead,
+safetyQty: daily * safety
+};
+}
+/*CALC-END*/
+
+function val(id){ return num(document.getElementById(id).value);}
+function pcs(n){ return Math.ceil(n).toLocaleString("ja-JP") + " 個";}
+function fmtDate(d){
+return d.toLocaleDateString("ja-JP", { month: "numeric", day: "numeric", weekday: "short"});
+}
+
+function update(){
+var stock = val("stock");
+var daily = val("daily");
+var lead = val("lead");
+var safety = val("safety");
+var cycle = val("cycle");
+
+var pointEl = document.getElementById("pointOut");
+var daysEl = document.getElementById("daysOut");
+var dateEl = document.getElementById("dateOut");
+var qtyEl = document.getElementById("qtyOut");
+var noteEl = document.getElementById("orderNote");
+
+var r = calcReorder(stock, daily, lead, safety, cycle);
+if (r === null) {
+pointEl.textContent = "—";
+daysEl.textContent = "—";
+dateEl.textContent = "—";
+qtyEl.textContent = "—";
+noteEl.textContent = "1日あたりの平均販売数が0のため計算できません。販売数を入れてください。";
+document.getElementById("dStock").textContent = Math.round(stock).toLocaleString("ja-JP") + " 個";
+document.getElementById("dPoint").textContent = "—";
+document.getElementById("dDaily").textContent = "0 個／日";
+document.getElementById("dLead").textContent = "—";
+document.getElementById("dSafety").textContent = "—";
+return;
+}
+
+pointEl.textContent = pcs(r.point);
+var immediate = r.daysUntil <= 0;
+if (immediate) {
+daysEl.textContent = "今すぐ発注";
+} else {
+daysEl.textContent = (Math.round(r.daysUntil * 10) / 10).toLocaleString("ja-JP") + " 日後";
+}
+var orderDate = new Date();
+if (!immediate) orderDate.setDate(orderDate.getDate() + Math.floor(r.daysUntil));
+dateEl.textContent = fmtDate(orderDate);
+qtyEl.textContent = pcs(r.qty);
+if (immediate) {
+noteEl.textContent = "在庫が発注点を下回っています。発注予定日は今日です。推奨発注数は、納期＋安全在庫＋次の発注サイクル分をまかなう数です（端数は切り上げ）。";
+} else {
+noteEl.textContent = "在庫が発注点を下回るのは " + (Math.round(r.daysUntil * 10) / 10).toLocaleString("ja-JP") + " 日後です。その日までに発注すれば、納期分の在庫を切らさずに回せる計算です。推奨発注数は、納期＋安全在庫＋次の発注サイクル分をまかなう数です（端数は切り上げ）。";
+}
+document.getElementById("dStock").textContent = Math.round(stock).toLocaleString("ja-JP") + " 個";
+document.getElementById("dPoint").textContent = pcs(r.point);
+document.getElementById("dDaily").textContent = (Math.round(daily * 10) / 10).toLocaleString("ja-JP") + " 個／日";
+document.getElementById("dLead").textContent = pcs(r.leadQty);
+document.getElementById("dSafety").textContent = pcs(r.safetyQty);
+}
+
+["stock","daily","lead","safety","cycle"].forEach(function(id){
+document.getElementById(id).addEventListener("input", update);
+});
+update();
+})();
+</script>
+</body>
+</html>
