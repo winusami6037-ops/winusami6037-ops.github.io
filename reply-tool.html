@@ -3,7 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>問い合わせ返信テンプレ生成ツール｜roi EC自動化</title>
+<title>問い合わせ返信テンプレ生成ツール｜ECの返信文を種別ごとに自動作成【無料・登録不要】</title>
+<meta name="description" content="EC運営の問い合わせ返信文を自動で組み立てる無料ツール。発送時期・在庫の有無・注文変更やキャンセル・届かないなど種別と、丁寧／カジュアルのトーンを選ぶだけで、「不安を受け止める一文→回答→次の案内」の型に沿った返信文が作れます。登録不要で、スマホからもそのまま使えます。">
+<meta property="og:title" content="問い合わせ返信テンプレ生成ツール｜ECの返信文を種別ごとに自動作成【無料・登録不要】">
+<meta property="og:description" content="EC運営の問い合わせ返信文を自動で組み立てる無料ツール。発送時期・在庫の有無・注文変更やキャンセル・届かないなど種別と、丁寧／カジュアルのトーンを選ぶだけで、「不安を受け止める一文→回答→次の案内」の型に沿った返信文が作れます。登録不要で、スマホからもそのまま使えます。">
+<meta property="og:type" content="website">
 <style>
 :root{
 --navy:#14304D; --teal:#12B5A5; --bg:#F4F7FA; --card:#FFFFFF;
@@ -89,6 +93,41 @@ footer{text-align:center; color:var(--muted); font-size:12px; padding:20px 0 32p
 </div>
 <textarea id="output" readonly placeholder="「返信文を生成する」を押すと、ここに文面が表示されます。"></textarea>
 <p class="hint">の部分（日付・番号など）を実際の内容に書き換えてから送信してください。</p>
+</div>
+<style>
+.seo-info ul,.seo-info ol{margin:0 0 6px 22px;font-size:14px;}
+.seo-info li{margin-bottom:4px;}
+.seo-info p{font-size:14px;margin-bottom:10px;}
+.seo-info p:last-child{margin-bottom:0;}
+.seo-info .tool-links{display:flex;flex-wrap:wrap;gap:8px;}
+.seo-info .tool-links a{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:6px 14px;font-size:13px;color:var(--navy);text-decoration:none;background:#FBFDFE;font-weight:700;}
+</style>
+<div class="card seo-info">
+<h2>このツールでできること</h2>
+<ul>
+<li>問い合わせの種別（発送時期／在庫の有無／注文変更・キャンセル／届かない・配送状況／その他）ごとに、返信文を自動生成できます。</li>
+<li>文面のトーンを「丁寧」「カジュアル」から選べます。</li>
+<li>返信文は「不安を受け止める一文 → 回答 → 次の案内」の型で組み立てられます。</li>
+<li>生成した返信文はボタンひとつでコピーできます。</li>
+</ul>
+</div>
+<div class="card seo-info">
+<h2>使い方</h2>
+<ol>
+<li>お客様名・店舗名（どちらも任意）を入力します。</li>
+<li>問い合わせ種別と、文面のトーンを選びます。</li>
+<li>「返信文を生成する」を押して、生成された返信文をコピーします。</li>
+<li>文中の空欄部分（発送予定日・注文番号・追跡番号など）を実際の内容に書き換えてから送信します。</li>
+</ol>
+</div>
+<div class="card seo-info">
+<h2>返信文の分岐の考え方</h2>
+<p>問い合わせへの返信は、種別ごとに「お客様が何を不安に感じているか」が異なります。このツールでは種別ごとに、最初の一文（不安を受け止める文）と回答の骨子を用意し、選んだトーン（丁寧／カジュアル）で語尾や言い回しを切り替える仕組みにしています。</p>
+<p>たとえば「発送時期について」なら発送予定日の案内、「届かない・配送状況について」なら配送状況の確認結果と追跡番号の案内、というように、種別に応じた回答部分が差し替わります。日付や番号などの具体的な内容は空欄になっているので、実際の内容を書き込んでから送信してください。</p>
+</div>
+<div class="card seo-info">
+<h2>ほかの無料ツール</h2>
+<div class="tool-links"><a href="shipping-notice.html">発送通知文ジェネレータ</a><a href="stocktake-tool.html">棚卸しチェックツール</a><a href="profit-tool.html">利益計算ツール</a><a href="home.html">無料ツール集（まとめページ）</a></div>
 </div>
 </main>
 <footer>roi｜EC自動化</footer>

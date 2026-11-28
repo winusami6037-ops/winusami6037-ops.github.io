@@ -3,7 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>棚卸しチェックツール｜roi EC自動化</title>
+<title>棚卸しチェックツール｜数えた数をチェックして棚卸しメモを自動作成【無料・登録不要】</title>
+<meta name="description" content="棚卸しの数え漏れを減らす無料チェックツール。商品を1行ずつ追加し、数え終わった分にチェックを付けると進捗と残り件数が一目で分かります。数えた数の合計集計と、棚卸しメモの自動生成・コピーにも対応。登録不要でデータは保存されません。月末や決算期の棚卸し作業にどうぞ。">
+<meta property="og:title" content="棚卸しチェックツール｜数えた数をチェックして棚卸しメモを自動作成【無料・登録不要】">
+<meta property="og:description" content="棚卸しの数え漏れを減らす無料チェックツール。商品を1行ずつ追加し、数え終わった分にチェックを付けると進捗と残り件数が一目で分かります。数えた数の合計集計と、棚卸しメモの自動生成・コピーにも対応。登録不要でデータは保存されません。月末や決算期の棚卸し作業にどうぞ。">
+<meta property="og:type" content="website">
 <style>
 :root{
 --navy:#14304D; --teal:#12B5A5; --bg:#F4F7FA; --card:#FFFFFF;
@@ -102,6 +106,42 @@ footer{text-align:center; color:var(--muted); font-size:12px; padding:20px 0 32p
 <textarea id="output" readonly placeholder="「棚卸しメモを生成する」を押すと、ここに結果が表示されます。"></textarea>
 <button class="gen" id="generate">棚卸しメモを生成する</button>
 <p class="hint">生成したメモは、在庫管理シートへの転記や、作業記録としてそのまま使えます。</p>
+</div>
+<style>
+.seo-info ul,.seo-info ol{margin:0 0 6px 22px;font-size:14px;}
+.seo-info li{margin-bottom:4px;}
+.seo-info p{font-size:14px;margin-bottom:10px;}
+.seo-info p:last-child{margin-bottom:0;}
+.seo-info .tool-links{display:flex;flex-wrap:wrap;gap:8px;}
+.seo-info .tool-links a{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:6px 14px;font-size:13px;color:var(--navy);text-decoration:none;background:#FBFDFE;font-weight:700;}
+</style>
+<div class="card seo-info">
+<h2>このツールでできること</h2>
+<ul>
+<li>商品を1行ずつ追加して、数え終わった行にチェックを付けるチェックリストが作れます。</li>
+<li>完了件数・残り件数・進捗バーで、棚卸しがどこまで終わったかが一目で分かります。</li>
+<li>行ごとに「数えた数」を記録でき、数えた数の合計も自動で集計されます。</li>
+<li>最後に棚卸しメモ（日時・各商品の済／未と数・進捗・合計）を自動生成してコピーできます。</li>
+<li>入力したデータはこのページの中だけで処理され、保存されません。</li>
+</ul>
+</div>
+<div class="card seo-info">
+<h2>使い方</h2>
+<ol>
+<li>商品名を入力して「＋ 行を追加する」で行を並べます（数はあとからでも入力できます）。</li>
+<li>棚の端から順番に数え、数え終わった行にチェックを付けます。</li>
+<li>行の「数えた数」に実数を入力します。</li>
+<li>「棚卸しメモを生成する」を押してメモをコピーし、在庫管理シートへの転記や作業記録に使います。</li>
+</ol>
+</div>
+<div class="card seo-info">
+<h2>数え漏れを防ぐ仕組み</h2>
+<p>このツールは、棚卸しの数え漏れを防ぐために「数え終わったかどうか」を1行ごとのチェックで管理する仕組みです。チェック済みの行は取り消し線で表示され、完了件数と残り件数が常に表示されるため、「どこまで数えたか分からなくなる」状態を防ぎます。</p>
+<p>数えた数は行ごとに入力でき、合計は自動で集計されます。棚卸しメモには各商品の「済／未」と数が一覧で出力されるので、数え直しが必要な行（未チェックの行）もメモからそのまま確認できます。</p>
+</div>
+<div class="card seo-info">
+<h2>ほかの無料ツール</h2>
+<div class="tool-links"><a href="shipping-notice.html">発送通知文ジェネレータ</a><a href="reply-tool.html">問い合わせ返信テンプレ生成ツール</a><a href="profit-tool.html">利益計算ツール</a><a href="home.html">無料ツール集（まとめページ）</a></div>
 </div>
 </main>
 <footer>roi｜EC自動化</footer>

@@ -3,7 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>発送通知文ジェネレータ｜roi EC自動化</title>
+<title>発送通知文ジェネレータ｜追跡番号入りの発送連絡メール文面を自動作成【無料・登録不要】</title>
+<meta name="description" content="商品名・配送会社・追跡番号を入れるだけで、発送通知メールの文面が自動で組み上がる無料ジェネレータ。「発送しました＋追跡番号＋追跡の調べ方」の3点セットの型で、ヤマト運輸・佐川急便・日本郵便に対応。トーンも選べてコピーも簡単です。登録不要で、スマホからもそのまま使えます。">
+<meta property="og:title" content="発送通知文ジェネレータ｜追跡番号入りの発送連絡メール文面を自動作成【無料・登録不要】">
+<meta property="og:description" content="商品名・配送会社・追跡番号を入れるだけで、発送通知メールの文面が自動で組み上がる無料ジェネレータ。「発送しました＋追跡番号＋追跡の調べ方」の3点セットの型で、ヤマト運輸・佐川急便・日本郵便に対応。トーンも選べてコピーも簡単です。登録不要で、スマホからもそのまま使えます。">
+<meta property="og:type" content="website">
 <style>
 :root{
 --navy:#14304D; --teal:#12B5A5; --bg:#F4F7FA; --card:#FFFFFF;
@@ -98,6 +102,42 @@ footer{text-align:center; color:var(--muted); font-size:12px; padding:20px 0 32p
 </div>
 <textarea id="output" readonly placeholder="「通知文を生成する」を押すと、ここに文面が表示されます。"></textarea>
 <p class="hint">件名は1行目に入っています。メール・メッセージの送信前に、商品名と追跡番号が合っているかだけ確認してください。</p>
+</div>
+<style>
+.seo-info ul,.seo-info ol{margin:0 0 6px 22px;font-size:14px;}
+.seo-info li{margin-bottom:4px;}
+.seo-info p{font-size:14px;margin-bottom:10px;}
+.seo-info p:last-child{margin-bottom:0;}
+.seo-info .tool-links{display:flex;flex-wrap:wrap;gap:8px;}
+.seo-info .tool-links a{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:6px 14px;font-size:13px;color:var(--navy);text-decoration:none;background:#FBFDFE;font-weight:700;}
+</style>
+<div class="card seo-info">
+<h2>このツールでできること</h2>
+<ul>
+<li>商品名・配送会社・追跡番号を入力するだけで、発送通知の文面（件名つき）を自動生成できます。</li>
+<li>「発送しました」「追跡番号」「追跡の調べ方」の3点セットがそろった型で文面を組み立てます。</li>
+<li>配送会社（ヤマト運輸・佐川急便・日本郵便・その他）ごとに、追跡の調べ方の案内文を自動で差し替えます。</li>
+<li>文面のトーンを「通常」「より丁寧」から選べます。</li>
+<li>生成した文面はボタンひとつでコピーできます。</li>
+</ul>
+</div>
+<div class="card seo-info">
+<h2>使い方</h2>
+<ol>
+<li>お客様名・店舗名（どちらも任意）と商品名を入力します。</li>
+<li>配送会社を選び、追跡番号（送り状番号）を入力します。</li>
+<li>文面のトーンを選んで、「通知文を生成する」を押します。</li>
+<li>生成された文面をコピーし、メールやメッセージに貼って送信します（送信前に商品名と追跡番号の確認を）。</li>
+</ol>
+</div>
+<div class="card seo-info">
+<h2>文面の型について</h2>
+<p>文面は「件名 → 挨拶 → 発送の報告 → 商品名・配送会社・追跡番号 → 追跡の調べ方 → 到着後の確認のお願い → 締めの挨拶」という順番で組み立てています。発送通知でお客様が知りたいのは「発送されたか」「追跡番号は何か」「どこで調べられるか」の3点で、この3点が最初からそろっていると、配送状況をたずねる問い合わせへの対応も楽になります。</p>
+<p>追跡の調べ方の案内文は、選んだ配送会社に合わせて自動で切り替わります。トーンを「より丁寧」にすると、挨拶や締めの文が丁寧な言い回しに変わります。お客様名・店舗名は未入力でも文面は作れます（その部分が省略されます）。</p>
+</div>
+<div class="card seo-info">
+<h2>ほかの無料ツール</h2>
+<div class="tool-links"><a href="reply-tool.html">問い合わせ返信テンプレ生成ツール</a><a href="stocktake-tool.html">棚卸しチェックツール</a><a href="profit-tool.html">利益計算ツール</a><a href="home.html">無料ツール集（まとめページ）</a></div>
 </div>
 </main>
 <footer>roi｜EC自動化</footer>
